@@ -1,0 +1,34 @@
+.page-shell {
+  align-items: center;
+  border-bottom: 0.0625rem solid #e7e7e7;
+  display: flex;
+  justify-content: space-between;
+  min-height: 4rem;
+  padding: 0 1.5rem;
+}
+
+.page-shell__brand,
+.page-shell__link {
+  color: #111111;
+  text-decoration: none;
+}
+
+.page-shell__brand {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.page-shell__nav {
+  align-items: center;
+  display: flex;
+  gap: 1.125rem;
+}
+
+.page-shell__link {
+  font-size: 0.9rem;
+}
+
+.page-shell__link:hover,
+.page-shell__brand:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,56 @@
+@font-face {
+  font-family: "Geist";
+  font-display: swap;
+  font-stretch: 100%;
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/assets/fonts/Geist/webfonts/Geist[wght].woff2")
+    format("woff2-variations");
+}
+
+@font-face {
+  font-family: "Geist";
+  font-display: swap;
+  font-stretch: 100%;
+  font-style: italic;
+  font-weight: 100 900;
+  src: url("/assets/fonts/Geist/webfonts/Geist-Italic[wght].woff2")
+    format("woff2-variations");
+}
+
+@font-feature-values "Geist" {
+  @styleset {
+    alt-l: 3;
+    alt-a: 1;
+    alt-R: 4;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color: #111111;
+  font-family: "Geist", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-variant-alternates: styleset(alt-l, alt-a, alt-R);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 20rem;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: #111111;
+  color: #ffffff;
+}

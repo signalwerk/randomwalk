@@ -1,0 +1,63 @@
+.home-page__hero {
+  max-width: 47.5rem;
+  width: min(100%, 47.5rem);
+}
+
+.home-page__eyebrow {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+}
+
+.home-page__title {
+  font-size: 8rem;
+  line-height: 0.95;
+  margin: 0;
+}
+
+.home-page__lead {
+  font-size: 1.2rem;
+  line-height: 1.55;
+  margin: 1.5rem 0 0;
+  max-width: 58ch;
+}
+
+.home-page__intro {
+  border-top: 0.0625rem solid #e7e7e7;
+  padding: 4.5rem 1.5rem;
+}
+
+.home-page__intro-inner {
+  max-width: 47.5rem;
+}
+
+.home-page__heading {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin: 0 0 1.5rem;
+}
+
+.home-page__intro p {
+  line-height: 1.7;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.home-page__intro p + p {
+  margin-top: 1.125rem;
+}
+
+.home-page__link {
+  color: #111111;
+  display: inline-block;
+  margin-top: 1.75rem;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.18em;
+}
+
+@media (max-width: 45rem) {
+  .home-page__title {
+    font-size: 3.4rem;
+  }
+}

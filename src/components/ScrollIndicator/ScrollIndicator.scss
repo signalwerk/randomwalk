@@ -1,0 +1,43 @@
+.scroll-indicator {
+  align-items: center;
+  color: #111111;
+  display: inline-flex;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+  text-decoration: none;
+}
+
+.scroll-indicator__text {
+  font-size: 0.85rem;
+}
+
+.scroll-indicator__arrow {
+  animation: scroll-indicator-bounce 1.4s ease-in-out infinite;
+  border-bottom: 0.0625rem solid #111111;
+  border-right: 0.0625rem solid #111111;
+  display: inline-block;
+  height: 0.65rem;
+  transform: rotate(45deg);
+  width: 0.65rem;
+}
+
+@keyframes scroll-indicator-bounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  50% {
+    transform: translateY(0.35rem) rotate(45deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator__arrow {
+    animation: none;
+  }
+}
+
+.scroll-indicator:hover .scroll-indicator__text {
+  text-decoration: underline;
+}
