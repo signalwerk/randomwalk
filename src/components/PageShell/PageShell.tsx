@@ -4,11 +4,11 @@ import "./PageShell.scss";
 
 type PageShellProps = {
   children: ReactNode;
-  years: string[];
+  seasons: string[];
 };
 
-export function PageShell({ children, years }: PageShellProps) {
-  const latestYear = years[0];
+export function PageShell({ children, seasons }: PageShellProps) {
+  const latestSeason = seasons[0];
 
   return (
     <>
@@ -17,8 +17,8 @@ export function PageShell({ children, years }: PageShellProps) {
           Random Walk
         </a>
         <nav className="page-shell__nav" aria-label="Main navigation">
-          {latestYear && (
-            <a className="page-shell__link" href={hrefFor(`/log/${latestYear}/`)}>
+          {latestSeason && (
+            <a className="page-shell__link" href={hrefFor(`/log/${latestSeason}/`)}>
               Log
             </a>
           )}

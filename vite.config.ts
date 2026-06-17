@@ -34,11 +34,11 @@ function signalwerkContentPlugin(): Plugin {
 
       const logPosts = readLogPosts();
       const topics = readTopics();
-      const years = getYears(logPosts);
+      const seasons = getSeasons(logPosts);
       const staticRoutes = [
         "/",
         "/topics/",
-        ...years.map((year) => `/log/${year}/`),
+        ...seasons.map((season) => `/log/${season}/`),
         ...logPosts.map((post) => post.path),
         ...topics.map((topic) => topic.path),
       ];
@@ -80,10 +80,10 @@ type GeneratedDocument = {
   html: string;
   intro?: string;
   path: string;
+  season?: string;
   slug: string;
   sourcePath: string;
   title: string;
-  year?: string;
 };
 
 function readLogPosts() {
@@ -129,9 +129,9 @@ function toDocument(
   const title = getString(attributes.title) || renderedTitle || "Untitled";
   const preferredSlug = getString(attributes.slug);
   const slug = slugify(preferredSlug || title);
-  const year = collection === "log" ? getYear(sourcePath) : undefined;
+  const season = collection === "log" ? getSeason(sourcePath) : undefined;
 
-  if (collection === "log" && !year) {
+  if (collection === "log" && !season) {
     return null;
   }
 
@@ -140,21 +140,21 @@ function toDocument(
     date: getString(attributes.date),
     html: processed.toString(),
     intro: getString(attributes.intro),
-    path: collection === "log" ? `/log/${year}/${slug}/` : `/topics/${slug}/`,
+    path: collection === "log" ? `/log/${season}/${slug}/` : `/topics/${slug}/`,
+    ...(season ? { season } : {}),
     slug,
     sourcePath,
     title,
-    ...(year ? { year } : {}),
   };
 }
 
-function getYear(sourcePath: string) {
+function getSeason(sourcePath: string) {
   return sourcePath.match(/content\/log\/([^/]+)\//)?.[1];
 }
 
-function getYears(posts: GeneratedDocument[]) {
+function getSeasons(posts: GeneratedDocument[]) {
   return Array.from(
-    new Set(posts.flatMap((post) => post.year ?? [])),
+    new Set(posts.flatMap((post) => post.season ?? [])),
   ).sort((a, b) => b.localeCompare(a));
 }
 

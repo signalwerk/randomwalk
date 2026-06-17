@@ -1,4 +1,4 @@
-import type { ContentListItem } from "../../lib/content";
+import { formatSeasonLabel, type ContentListItem } from "../../lib/content";
 import { hrefFor } from "../../lib/routes";
 import "./ContentList.scss";
 
@@ -18,7 +18,13 @@ export function ContentList({ emptyText, items }: ContentListProps) {
         <li className="content-list__item" key={item.path}>
           <a className="content-list__link" href={hrefFor(item.path)}>
             <span className="content-list__title">{item.title}</span>
-            {item.date && <span className="content-list__date">{item.date}</span>}
+            {(item.season || item.date) && (
+              <span className="content-list__meta">
+                {[item.season ? formatSeasonLabel(item.season) : undefined, item.date]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </span>
+            )}
             {item.intro && <span className="content-list__intro">{item.intro}</span>}
           </a>
         </li>

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { MarkdownDocument } from "../../lib/content";
 import { hrefFor } from "../../lib/routes";
 import { MarkdownContent } from "../MarkdownContent/MarkdownContent";
@@ -10,9 +11,11 @@ type ArticleDocumentProps = {
   className?: string;
   document?: MarkdownDocument;
   missingTitle: string;
+  afterContent?: ReactNode;
 };
 
 export function ArticleDocument({
+  afterContent,
   backHref,
   backLabel,
   className,
@@ -33,6 +36,7 @@ export function ArticleDocument({
               title={document.title}
             />
             <MarkdownContent html={document.html} />
+            {afterContent}
           </>
         ) : (
           <PageHeader title={missingTitle} />

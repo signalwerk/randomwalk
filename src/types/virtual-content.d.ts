@@ -5,10 +5,10 @@ declare module "virtual:content" {
     html: string;
     intro?: string;
     path: string;
+    season?: string;
     slug: string;
     sourcePath: string;
     title: string;
-    year?: string;
   };
 
   export const logPosts: VirtualDocument[];

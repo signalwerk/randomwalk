@@ -8,6 +8,7 @@
   font-weight: 700;
   margin: 0 0 1rem;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .home-page__title {
@@ -46,6 +47,11 @@
 
 .home-page__intro p + p {
   margin-top: 1.125rem;
+}
+
+.home-page__latest {
+  --collection-overview-max-width: 47.5rem;
+  padding: 4rem 0 0;
 }
 
 .home-page__link {

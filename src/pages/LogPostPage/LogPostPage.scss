@@ -1,3 +1,12 @@
 .log-post-page {
   --article-document-max-width: 47.5rem;
 }
+
+.log-post-page__related {
+  margin-top: 4rem;
+}
+
+.log-post-page__adjacent {
+  --collection-overview-max-width: 47.5rem;
+  padding: 3rem 0 0;
+}

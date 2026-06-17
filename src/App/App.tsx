@@ -1,14 +1,16 @@
 import { PageShell } from "../components/PageShell/PageShell";
 import { HomePage } from "../pages/HomePage/HomePage";
 import { LogPostPage } from "../pages/LogPostPage/LogPostPage";
-import { LogYearPage } from "../pages/LogYearPage/LogYearPage";
+import { LogSeasonPage } from "../pages/LogSeasonPage/LogSeasonPage";
 import { TopicPage } from "../pages/TopicPage/TopicPage";
 import { TopicsPage } from "../pages/TopicsPage/TopicsPage";
 import {
+  getAdjacentLogPosts,
   getLogPost,
-  getLogPostsByYear,
+  getLogPostsBySeason,
+  getLatestLogPosts,
   getTopic,
-  getYears,
+  getSeasons,
   topics,
 } from "../lib/content";
 import { pathnameWithoutBase } from "../lib/routes";
@@ -19,20 +21,26 @@ type AppProps = {
 };
 
 export function App({ pathname = "/" }: AppProps) {
-  const years = getYears();
+  const seasons = getSeasons();
   const route = resolveRoute(pathnameWithoutBase(pathname));
 
   return (
     <div className="app">
-      <PageShell years={years}>
-        {route.type === "home" && <HomePage latestYear={years[0]} />}
-        {route.type === "year" && (
-          <LogYearPage posts={getLogPostsByYear(route.year)} year={route.year} />
+      <PageShell seasons={seasons}>
+        {route.type === "home" && (
+          <HomePage latestPosts={getLatestLogPosts(20)} latestSeason={seasons[0]} />
+        )}
+        {route.type === "season" && (
+          <LogSeasonPage
+            posts={getLogPostsBySeason(route.season)}
+            season={route.season}
+          />
         )}
         {route.type === "post" && (
           <LogPostPage
-            post={getLogPost(route.year, route.slug)}
-            year={route.year}
+            adjacentPosts={getAdjacentLogPosts(route.season, route.slug)}
+            post={getLogPost(route.season, route.slug)}
+            season={route.season}
           />
         )}
         {route.type === "topics" && <TopicsPage topics={topics} />}
@@ -46,8 +54,8 @@ export function App({ pathname = "/" }: AppProps) {
 
 type Route =
   | { type: "home" }
-  | { type: "year"; year: string }
-  | { type: "post"; slug: string; year: string }
+  | { type: "season"; season: string }
+  | { type: "post"; season: string; slug: string }
   | { type: "topics" }
   | { type: "topic"; slug: string };
 
@@ -73,17 +81,17 @@ function resolveRoute(pathname: string): Route {
   if (postMatch) {
     return {
       slug: postMatch[2],
+      season: postMatch[1],
       type: "post",
-      year: postMatch[1],
     };
   }
 
-  const yearMatch = normalized.match(/^\/log\/([^/]+)\/?$/);
+  const seasonMatch = normalized.match(/^\/log\/([^/]+)\/?$/);
 
-  if (yearMatch) {
+  if (seasonMatch) {
     return {
-      type: "year",
-      year: yearMatch[1],
+      season: seasonMatch[1],
+      type: "season",
     };
   }
 
