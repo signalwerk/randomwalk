@@ -6,55 +6,61 @@ import react from "@vitejs/plugin-react";
 import { extractFrontmatter, htmlProcessor } from "signalwerk.md/src/processor.js";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
-const postsDir = path.join(rootDir, "content", "log");
-const virtualPostsModuleId = "virtual:posts";
-const resolvedVirtualPostsModuleId = `\0${virtualPostsModuleId}`;
+const contentDir = path.join(rootDir, "content");
+const logDir = path.join(contentDir, "log");
+const topicsDir = path.join(contentDir, "topics");
+const virtualContentModuleId = "virtual:content";
+const resolvedVirtualContentModuleId = `\0${virtualContentModuleId}`;
 
 export default defineConfig({
   base: normalizeBasePath(process.env.BASE_PATH),
-  plugins: [react(), signalwerkPostsPlugin()],
+  plugins: [react(), signalwerkContentPlugin()],
 });
 
-function signalwerkPostsPlugin(): Plugin {
+function signalwerkContentPlugin(): Plugin {
   return {
-    name: "signalwerk-posts",
+    name: "signalwerk-content",
     resolveId(id) {
-      if (id === virtualPostsModuleId) {
-        return resolvedVirtualPostsModuleId;
+      if (id === virtualContentModuleId) {
+        return resolvedVirtualContentModuleId;
       }
 
       return undefined;
     },
     load(id) {
-      if (id !== resolvedVirtualPostsModuleId) {
+      if (id !== resolvedVirtualContentModuleId) {
         return undefined;
       }
 
-      const posts = readPosts();
-      const years = getYears(posts);
+      const logPosts = readLogPosts();
+      const topics = readTopics();
+      const years = getYears(logPosts);
       const staticRoutes = [
         "/",
+        "/topics/",
         ...years.map((year) => `/log/${year}/`),
-        ...posts.map((post) => `/log/${post.year}/${post.slug}/`),
+        ...logPosts.map((post) => post.path),
+        ...topics.map((topic) => topic.path),
       ];
 
-      for (const post of posts) {
-        this.addWatchFile(path.join(rootDir, post.sourcePath));
+      for (const document of [...logPosts, ...topics]) {
+        this.addWatchFile(path.join(rootDir, document.sourcePath));
       }
 
       return [
-        `export const posts = ${JSON.stringify(posts)};`,
+        `export const logPosts = ${JSON.stringify(logPosts)};`,
+        `export const topics = ${JSON.stringify(topics)};`,
         `export const staticRoutes = ${JSON.stringify(staticRoutes)};`,
       ].join("\n");
     },
     configureServer(server) {
-      server.watcher.add(postsDir);
+      server.watcher.add(contentDir);
       server.watcher.on("all", (_eventName, changedPath) => {
-        if (!isMarkdownPath(changedPath) || !isInside(changedPath, postsDir)) {
+        if (!isMarkdownPath(changedPath) || !isInside(changedPath, contentDir)) {
           return;
         }
 
-        const mod = server.moduleGraph.getModuleById(resolvedVirtualPostsModuleId);
+        const mod = server.moduleGraph.getModuleById(resolvedVirtualContentModuleId);
 
         if (mod) {
           server.moduleGraph.invalidateModule(mod);
@@ -66,25 +72,37 @@ function signalwerkPostsPlugin(): Plugin {
   };
 }
 
-type GeneratedPost = {
+type ContentCollection = "log" | "topics";
+
+type GeneratedDocument = {
+  collection: ContentCollection;
   date?: string;
   html: string;
   intro?: string;
+  path: string;
   slug: string;
   sourcePath: string;
   title: string;
-  year: string;
+  year?: string;
 };
 
-function readPosts() {
-  if (!fs.existsSync(postsDir)) {
+function readLogPosts() {
+  return readCollection(logDir, "log");
+}
+
+function readTopics() {
+  return readCollection(topicsDir, "topics");
+}
+
+function readCollection(directory: string, collection: ContentCollection) {
+  if (!fs.existsSync(directory)) {
     return [];
   }
 
-  return listMarkdownFiles(postsDir)
-    .map(toPost)
-    .filter((post): post is GeneratedPost => Boolean(post))
-    .sort(comparePosts);
+  return listMarkdownFiles(directory)
+    .map((filePath) => toDocument(filePath, collection))
+    .filter((document): document is GeneratedDocument => Boolean(document))
+    .sort(compareDocuments);
 }
 
 function listMarkdownFiles(directory: string): string[] {
@@ -99,29 +117,34 @@ function listMarkdownFiles(directory: string): string[] {
   });
 }
 
-function toPost(filePath: string): GeneratedPost | null {
+function toDocument(
+  filePath: string,
+  collection: ContentCollection,
+): GeneratedDocument | null {
   const sourcePath = path.relative(rootDir, filePath);
-  const year = getYear(sourcePath);
-
-  if (!year) {
-    return null;
-  }
-
   const markdown = fs.readFileSync(filePath, "utf-8");
   const { attributes, body } = extractFrontmatter(markdown);
   const processed = htmlProcessor().processSync(body);
   const renderedTitle = getString(processed.data.title);
   const title = getString(attributes.title) || renderedTitle || "Untitled";
   const preferredSlug = getString(attributes.slug);
+  const slug = slugify(preferredSlug || title);
+  const year = collection === "log" ? getYear(sourcePath) : undefined;
+
+  if (collection === "log" && !year) {
+    return null;
+  }
 
   return {
+    collection,
     date: getString(attributes.date),
     html: processed.toString(),
     intro: getString(attributes.intro),
-    slug: slugify(preferredSlug || title),
+    path: collection === "log" ? `/log/${year}/${slug}/` : `/topics/${slug}/`,
+    slug,
     sourcePath,
     title,
-    year,
+    ...(year ? { year } : {}),
   };
 }
 
@@ -129,10 +152,10 @@ function getYear(sourcePath: string) {
   return sourcePath.match(/content\/log\/([^/]+)\//)?.[1];
 }
 
-function getYears(posts: GeneratedPost[]) {
-  return Array.from(new Set(posts.map((post) => post.year))).sort((a, b) =>
-    b.localeCompare(a),
-  );
+function getYears(posts: GeneratedDocument[]) {
+  return Array.from(
+    new Set(posts.flatMap((post) => post.year ?? [])),
+  ).sort((a, b) => b.localeCompare(a));
 }
 
 function getString(value: unknown) {
@@ -151,7 +174,7 @@ function getString(value: unknown) {
   return undefined;
 }
 
-function comparePosts(a: GeneratedPost, b: GeneratedPost) {
+function compareDocuments(a: GeneratedDocument, b: GeneratedDocument) {
   const aTime = getTime(a.date);
   const bTime = getTime(b.date);
 

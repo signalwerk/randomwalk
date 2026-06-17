@@ -1,18 +1,18 @@
-.post-list {
+.content-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.post-list__item {
+.content-list__item {
   border-top: 0.0625rem solid #e7e7e7;
 }
 
-.post-list__item:last-child {
+.content-list__item:last-child {
   border-bottom: 0.0625rem solid #e7e7e7;
 }
 
-.post-list__link {
+.content-list__link {
   color: #111111;
   display: grid;
   gap: 0.5rem;
@@ -20,32 +20,32 @@
   text-decoration: none;
 }
 
-.post-list__link:hover .post-list__title {
+.content-list__link:hover .content-list__title {
   text-decoration: underline;
 }
 
-.post-list__title {
+.content-list__title {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.25;
 }
 
-.post-list__date,
-.post-list__intro,
-.post-list__empty {
+.content-list__date,
+.content-list__intro,
+.content-list__empty {
   color: #555555;
 }
 
-.post-list__date {
+.content-list__date {
   font-size: 0.85rem;
 }
 
-.post-list__intro {
+.content-list__intro {
   font-size: 1rem;
   line-height: 1.55;
   max-width: 68ch;
 }
 
-.post-list__empty {
+.content-list__empty {
   margin: 0;
 }

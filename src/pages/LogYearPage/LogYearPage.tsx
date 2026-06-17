@@ -1,20 +1,20 @@
-import { PostList } from "../../components/PostList/PostList";
-import type { MarkdownPost } from "../../lib/posts";
+import { CollectionOverview } from "../../components/CollectionOverview/CollectionOverview";
+import type { MarkdownDocument } from "../../lib/content";
 import "./LogYearPage.scss";
 
 type LogYearPageProps = {
-  posts: MarkdownPost[];
+  posts: MarkdownDocument[];
   year: string;
 };
 
 export function LogYearPage({ posts, year }: LogYearPageProps) {
   return (
-    <main className="log-year-page">
-      <div className="log-year-page__inner">
-        <p className="log-year-page__eyebrow">Log</p>
-        <h1 className="log-year-page__title">{year}</h1>
-        <PostList posts={posts} />
-      </div>
-    </main>
+    <CollectionOverview
+      className="log-year-page"
+      emptyText="No posts for this year."
+      eyebrow="Log"
+      items={posts}
+      title={year}
+    />
   );
 }

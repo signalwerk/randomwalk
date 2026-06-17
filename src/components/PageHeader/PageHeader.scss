@@ -1,0 +1,30 @@
+.page-header {
+  margin-bottom: 3rem;
+}
+
+.page-header__eyebrow {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0 0 0.875rem;
+  text-transform: uppercase;
+}
+
+.page-header__title {
+  font-size: 3rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.page-header__intro {
+  color: #333333;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  margin: 1.375rem 0 0;
+  max-width: 68ch;
+}
+
+@media (max-width: 45rem) {
+  .page-header__title {
+    font-size: 2.2rem;
+  }
+}

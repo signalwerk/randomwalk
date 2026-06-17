@@ -22,6 +22,9 @@ export function PageShell({ children, years }: PageShellProps) {
               Log
             </a>
           )}
+          <a className="page-shell__link" href={hrefFor("/topics/")}>
+            Topics
+          </a>
         </nav>
       </header>
       {children}
