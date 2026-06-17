@@ -8,9 +8,12 @@ This summer, I’m planning a small trip in Europe. I want to visit some friends
 
 ## Questions for this season
 
-- Font-Editor – What is the current status of font editors in Europe, and why is Europe dominating the font editor market?
-- How to Learn in 2026 – What are the best ways to learn new skills and knowledge in a world where AI is becoming more prevalent?
-- Beowolf – Research more about the font Beowolf and learn about its history.
+- **Font-Editor in Europe**  
+  What is the current status of font editors in Europe, and why is Europe dominating the font editor market?
+- **How to Learn in the Age of AI**  
+  What are the best ways to learn new skills and knowledge in a world where AI is becoming more prevalent?
+- **Beowolf**  
+  Research more about the font Beowolf and learn about its history.
 
 ## Goals for this season
 

@@ -26,7 +26,7 @@ export function LogPostPage({ adjacentPosts, post, season }: LogPostPageProps) {
               emptyText="No newer post."
               eyebrow="Next"
               items={adjacentPosts.nextPost ? [adjacentPosts.nextPost] : []}
-              title="Next post"
+              // title="Next post"
               titleLevel={2}
             />
             <CollectionOverview
@@ -35,7 +35,7 @@ export function LogPostPage({ adjacentPosts, post, season }: LogPostPageProps) {
               emptyText="No previous post."
               eyebrow="Previous"
               items={adjacentPosts.previousPost ? [adjacentPosts.previousPost] : []}
-              title="Previous post"
+              // title="Previous post"
               titleLevel={2}
             />
           </footer>

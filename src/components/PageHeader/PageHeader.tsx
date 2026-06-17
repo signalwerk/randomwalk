@@ -18,7 +18,7 @@ export function PageHeader({
   return (
     <header className="page-header">
       {eyebrow && <p className="page-header__eyebrow">{eyebrow}</p>}
-      <Title className="page-header__title">{title}</Title>
+      {title && <Title className="page-header__title">{title}</Title>}
       {intro && <p className="page-header__intro">{intro}</p>}
     </header>
   );
