@@ -1,3 +1,5 @@
+@import "/assets/fonts/ibm-plex-mono/css/ibm-plex-mono-default.css";
+
 @font-face {
   font-family: "Geist";
   font-display: swap;
@@ -22,7 +24,7 @@
   @styleset {
     alt-l: 3;
     alt-a: 1;
-    alt-R: 4;
+    alt-r: 4;
   }
 }
 
@@ -32,9 +34,15 @@
 
 html {
   color: #111111;
-  font-family: "Geist", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-variant-alternates: styleset(alt-l, alt-a, alt-R);
+  font-family:
+    "Geist",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-variant-alternates: styleset(alt-l, alt-a, alt-r);
   scroll-behavior: smooth;
 }
 
@@ -53,4 +61,8 @@ select {
 ::selection {
   background: #111111;
   color: #ffffff;
+}
+
+footer.sources {
+  font-family: "IBM Plex Mono", "Courier New", Courier, monospace;
 }

@@ -14,6 +14,10 @@ const resolvedVirtualContentModuleId = `\0${virtualContentModuleId}`;
 
 export default defineConfig({
   base: normalizeBasePath(process.env.BASE_PATH),
+  publicDir: "public",
+  build: {
+    assetsDir: "assets",
+  },
   plugins: [react(), signalwerkContentPlugin()],
 });
 
